@@ -79,6 +79,25 @@ public class TarefaTableModel extends AbstractTableModel {
         }
         this.fireTableDataChanged();
     }
+      //mudanças
+    private List<Tarefa> getTodasAsTarefas(){
+        if (this.exibirFinalizadas){
+            ArrayList<Tarefa> todas = new ArrayList<Tarefa>(); // cria uma nova lista com todas as tarefas
+            todas.addAll(tarefasAtivas); // todas as tarefas ativas
+            todas.addAll(tarefasFinalizadas); //todas as finalizadas
+            return todas; // retorna todas as tarefas(finalizadas/ativas)
+        }
+        return tarefasAtivas; // retorna somente tarefas ativas
+    }
+    public Tarefa getTarefa(int indice){
+        List<Tarefa> tarefas = getTodasAsTarefas();
+        if(indice >= 0 && indice < tarefas.size()){
+            return tarefas.get(indice);
+        }
+
+        return null;
+    }
+///
 
     public List<Tarefa> getTarefasFinalizadas() {
         return tarefasFinalizadas;
