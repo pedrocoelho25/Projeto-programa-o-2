@@ -28,6 +28,12 @@ public class TelaPrincipal {
     public TelaPrincipal() {
         super();
         tarefas = new ArrayList<>();
+        //mudança
+        txtDescricaoTarefa.addActionListener(e->{
+            adicionarTarefa(txtDescricaoTarefa.getText());
+            txtDescricaoTarefa.setText("");
+
+        //existente   
         btnAdicionarTarefa.addActionListener(e -> {
             adicionarTarefa(txtDescricaoTarefa.getText());
             txtDescricaoTarefa.setText("");
