@@ -3,7 +3,8 @@ package br.upe.ui;
 import br.upe.controller.TarefaControlador;
 import br.upe.model.Tarefa;
 import br.upe.model.TarefaTableModel;
-
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -24,15 +25,25 @@ public class TelaPrincipal {
     private List<Tarefa> tarefas;
 
     private TarefaControlador controlador;
-
+    
     public TelaPrincipal() {
         super();
         tarefas = new ArrayList<>();
         //mudança
+        txtDescricaoTarefa.addKeyListener(new KeyAdapter(){
+            @Override 
+            public void keyReleased(KeyEvent e){
+                String texto = txtDescricaoTarefa.getText();
+                btnAdicionarTarefa.setEnabled(!texto.isEmpty());
+            }
+        });   
+        
         txtDescricaoTarefa.addActionListener(e->{
-            adicionarTarefa(txtDescricaoTarefa.getText());
-            txtDescricaoTarefa.setText("");
-
+        String texto = txtDescricaoTarefa.getText();
+           if(!texto.isEmpty()){
+              adicionarTarefa(texto);
+              txtDescricaoTarefa.setText("");
+           }
         //existente   
         btnAdicionarTarefa.addActionListener(e -> {
             adicionarTarefa(txtDescricaoTarefa.getText());
@@ -43,6 +54,9 @@ public class TelaPrincipal {
             controlador.exibirFinalizadas(selecionado);
         });
     }
+    
+
+                                             
 
     private void adicionarTarefa(String texto) {
         Tarefa tarefa = new Tarefa(texto, tarefas.size());
