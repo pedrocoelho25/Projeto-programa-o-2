@@ -3,16 +3,11 @@ package br.upe.ui;
 import br.upe.controller.TarefaControlador;
 import br.upe.model.Tarefa;
 import br.upe.model.TarefaTableModel;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.event.MouseEvent;
 
 public class TelaPrincipal {
     private JPanel pnlMain;
@@ -25,44 +20,56 @@ public class TelaPrincipal {
     private List<Tarefa> tarefas;
 
     private TarefaControlador controlador;
-    
+
     public TelaPrincipal() {
         super();
         tarefas = new ArrayList<>();
-        //mudança
-        txtDescricaoTarefa.addKeyListener(new KeyAdapter(){
-            @Override 
-            public void keyReleased(KeyEvent e){
-                String texto = txtDescricaoTarefa.getText();
-                btnAdicionarTarefa.setEnabled(!texto.isEmpty());
-            }
-        });   
-        
+        //mudanças
         txtDescricaoTarefa.addActionListener(e->{
-        String texto = txtDescricaoTarefa.getText();
-           if(!texto.isEmpty()){
-              adicionarTarefa(texto);
-              txtDescricaoTarefa.setText("");
-           }
-        //existente   
-        btnAdicionarTarefa.addActionListener(e -> {
             adicionarTarefa(txtDescricaoTarefa.getText());
             txtDescricaoTarefa.setText("");
+
+        });
+
+
+        //existente
+        btnAdicionarTarefa.addActionListener(e -> { // funçao que faz com que o computador "ouça" oq esta escrito
+            adicionarTarefa(txtDescricaoTarefa.getText());  //pegar texto do atributo colocar no campo de texto
+            txtDescricaoTarefa.setText(""); //limpar o texto do campo de texto
         });
         chkExibirFinalizadas.addActionListener(e -> {
             boolean selecionado = ((JCheckBox) e.getSource()).isSelected();
             controlador.exibirFinalizadas(selecionado);
         });
-    }
-    
 
-                                             
+    }
 
     private void adicionarTarefa(String texto) {
-        Tarefa tarefa = new Tarefa(texto, tarefas.size());
-        controlador.adicionarTarefaAtiva(tarefa);
-        tblTarefas.revalidate();
-        tblTarefas.repaint();
+        Tarefa tarefa = new Tarefa(texto, tarefas.size()); //cria uma nova tarefa da classe Tarefa e ver o tamanho do texto
+        controlador.adicionarTarefaAtiva(tarefa); // controla toda a função de adicionar a tarefa
+        tblTarefas.revalidate(); // reavalia os componentes do painel e suas dimensões
+        tblTarefas.repaint(); //reescreve texto no campo
+    }
+    //mudanças
+    public void deletarTarefa(int indice){
+        if(indice == -1){
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Por favor selecione uma tarefa válida!",
+                    "AVISO",JOptionPane.WARNING_MESSAGE
+            );
+           return;
+        }
+        TarefaTableModel tabela = controlador.getTarefaTableModel();
+        Tarefa tarefa = tabela.getTarefa(indice);
+        JOptionPane.showConfirmDialog(
+                null, "Deseja deletar tarefa: "+ tarefa.getDescricao() + "?",
+                "Deletar tarefa", JOptionPane.YES_NO_OPTION
+        );
+
+//        controlador.removerTarefa(tarefa);
+        tabela.fireTableDataChanged();
+
     }
 
     public JPanel getPnlMain() {
@@ -73,6 +80,16 @@ public class TelaPrincipal {
         controlador = new TarefaControlador();
         tblTarefas = new JTable(controlador.getTarefaTableModel());
         tblTarefas.getColumnModel().getColumn(0).setMaxWidth(20);
+        tblTarefas.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(e.getClickCount() == 2){
+                int indice = tblTarefas.getSelectedRow();
+                deletarTarefa(indice);
+                }
+
+            }
+        });
     }
 
 }
