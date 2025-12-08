@@ -7,7 +7,7 @@ import br.upe.model.TarefaTableModel;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.event.MouseEvent;
+import java.awt.event.MouseEvent; //Classes usadas para as funcionalidades
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -28,8 +28,11 @@ public class TelaPrincipal {
         tarefas = new ArrayList<>();
 
         
-        //mudanças
+        //MUDANÇAS
 
+
+
+        //FUNCIONALIDADE NOVA: ocultar botão adicionar
         txtDescricaoTarefa.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -39,7 +42,7 @@ public class TelaPrincipal {
 
         
         
-        
+        //botão enter sem key Listener
         txtDescricaoTarefa.addActionListener(e->{
             if(!txtDescricaoTarefa.getText().isEmpty()) {
                 adicionarTarefa(txtDescricaoTarefa.getText());
@@ -67,6 +70,7 @@ public class TelaPrincipal {
         tblTarefas.repaint(); 
     }
     //mudanças
+    //FUNCIONALIDADE NOVA: Deletar tarefa
     public void deletarTarefa(int indice){
         if(indice == -1){
             JOptionPane.showMessageDialog(
@@ -98,6 +102,7 @@ public class TelaPrincipal {
         controlador = new TarefaControlador();
         tblTarefas = new JTable(controlador.getTarefaTableModel());
         tblTarefas.getColumnModel().getColumn(0).setMaxWidth(20);
+        //Listener para o click do mouse
         tblTarefas.addMouseListener(new java.awt.event.MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e) {
