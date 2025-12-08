@@ -1,40 +1,64 @@
 package br.upe.controller;
-
 import br.upe.model.Tarefa;
 import br.upe.model.TarefaTableModel;
+import br.upe.TarefaRepositorio;
 
-import javax.swing.event.TableModelListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TarefaControlador {
 
-    // Atributos
     private TarefaTableModel tarefaTableModel;
+    private TarefaRepositorio repositorio;
 
-    //Construtor
     public TarefaControlador() {
         tarefaTableModel = new TarefaTableModel();
+        repositorio = new TarefaRepositorio();
+
+        carregarTarefas();
     }
 
-    //Metodos de negocio
     public void adicionarTarefaAtiva(Tarefa tarefa) {
-        this.tarefaTableModel.getTarefasAtivas().add(tarefa);
+        tarefaTableModel.getTarefasAtivas().add(tarefa);
+        salvarTarefas();
+        tarefaTableModel.fireTableDataChanged();
     }
 
     public void exibirFinalizadas(boolean exibir) {
         tarefaTableModel.setExibirFinalizadas(exibir);
     }
 
+    public void salvarTarefas() {
+        repositorio.salvar(
+                tarefaTableModel.getTarefasAtivas(),
+                tarefaTableModel.getTarefasFinalizadas()
 
-    //Getter e Setters
+        );
+        tarefaTableModel.fireTableDataChanged();
+    }
+    public void removerTarefa(Tarefa tarefa) {
+
+        if (tarefa.isFinalizada()) {
+            tarefaTableModel.getTarefasFinalizadas().remove(tarefa);
+        } else {
+            tarefaTableModel.getTarefasAtivas().remove(tarefa);
+        }
+
+
+        salvarTarefas();
+
+
+        tarefaTableModel.fireTableDataChanged();,
+    }
+
+    public void carregarTarefas() {
+
+        List<List<Tarefa>> dados = repositorio.carregar();
+        tarefaTableModel.setTarefasAtivas(dados.get(0));
+        tarefaTableModel.setTarefasFinalizadas(dados.get(1))
+        tarefaTableModel.fireTableDataChanged();
+    }
 
     public TarefaTableModel getTarefaTableModel() {
         return tarefaTableModel;
     }
-
-    public void setTarefaTableModel(TarefaTableModel tarefaTableModel) {
-        this.tarefaTableModel = tarefaTableModel;
-    }
-
 }
