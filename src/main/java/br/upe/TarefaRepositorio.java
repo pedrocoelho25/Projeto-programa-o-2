@@ -1,11 +1,12 @@
 package br.upe;
 import br.upe.model.Tarefa;
-import br.upe.model.TarefaTableModel;
+
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 public class TarefaRepositorio {
+
     private static final String CAMINHO_ARQUIVO = "tarefas.dat";
 
     public void salvar(List<Tarefa> tarefasAtivas, List<Tarefa> tarefasFinalizadas) {
@@ -42,5 +43,4 @@ public class TarefaRepositorio {
             return List.of(new ArrayList<>(), new ArrayList<>());
         }
     }
-
 }
