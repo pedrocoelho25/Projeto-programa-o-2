@@ -41,9 +41,10 @@ public class TelaPrincipal {
         
         
         txtDescricaoTarefa.addActionListener(e->{
-            adicionarTarefa(txtDescricaoTarefa.getText());
-            txtDescricaoTarefa.setText("");
-
+            if(!txtDescricaoTarefa.getText().isEmpty()) {
+                adicionarTarefa(txtDescricaoTarefa.getText());
+                txtDescricaoTarefa.setText("");
+            }
         });
 
 
@@ -60,7 +61,7 @@ public class TelaPrincipal {
     }
 
     private void adicionarTarefa(String texto) {
-        Tarefa tarefa = new Tarefa(texto, tarefas.size()); 
+        Tarefa tarefa = new Tarefa(texto, tarefas.size());
         controlador.adicionarTarefaAtiva(tarefa); 
         tblTarefas.revalidate(); 
         tblTarefas.repaint(); 
@@ -77,13 +78,15 @@ public class TelaPrincipal {
         }
         TarefaTableModel tabela = controlador.getTarefaTableModel();
         Tarefa tarefa = tabela.getTarefa(indice);
-        JOptionPane.showConfirmDialog(
+        int opcao = JOptionPane.showConfirmDialog(
                 null, "Deseja deletar tarefa: "+ tarefa.getDescricao() + "?",
                 "Deletar tarefa", JOptionPane.YES_NO_OPTION
         );
+        if (opcao == JOptionPane.YES_OPTION) {
+            controlador.removerTarefa(tarefa);
+            tabela.fireTableDataChanged();
+        }
 
-        controlador.removerTarefa(tarefa);
-        tabela.fireTableDataChanged();
 
     }
 
