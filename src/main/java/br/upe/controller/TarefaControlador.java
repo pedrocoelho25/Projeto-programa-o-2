@@ -3,6 +3,7 @@ import br.upe.model.Tarefa;
 import br.upe.model.TarefaTableModel;
 import br.upe.TarefaRepositorio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TarefaControlador {
@@ -47,18 +48,38 @@ public class TarefaControlador {
         salvarTarefas();
 
 
-        tarefaTableModel.fireTableDataChanged();,
+        tarefaTableModel.fireTableDataChanged();
     }
 
     public void carregarTarefas() {
 
         List<List<Tarefa>> dados = repositorio.carregar();
-        tarefaTableModel.setTarefasAtivas(dados.get(0));
-        tarefaTableModel.setTarefasFinalizadas(dados.get(1))
+
+        List<Tarefa> ativas = new ArrayList<>();
+        List<Tarefa> finalizadas = new ArrayList<>();
+
+
+        List<Tarefa> todas = new ArrayList<>();
+        todas.addAll(dados.get(0));
+        todas.addAll(dados.get(1));
+
+
+        for (Tarefa t : todas) {
+            if (t.isFinalizada()) {
+                finalizadas.add(t);
+            } else {
+                ativas.add(t);
+            }
+        }
+
+        tarefaTableModel.setTarefasAtivas(ativas);
+        tarefaTableModel.setTarefasFinalizadas(finalizadas);
         tarefaTableModel.fireTableDataChanged();
     }
+
 
     public TarefaTableModel getTarefaTableModel() {
         return tarefaTableModel;
     }
 }
+
