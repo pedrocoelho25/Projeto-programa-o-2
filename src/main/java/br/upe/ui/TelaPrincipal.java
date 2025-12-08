@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class TelaPrincipal {
     private JPanel pnlMain;
@@ -24,7 +26,20 @@ public class TelaPrincipal {
     public TelaPrincipal() {
         super();
         tarefas = new ArrayList<>();
+
+        
         //mudanças
+
+        txtDescricaoTarefa.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                btnAdicionarTarefa.setEnabled(!txtDescricaoTarefa.getText().isEmpty());
+            }
+        });
+
+        
+        
+        
         txtDescricaoTarefa.addActionListener(e->{
             adicionarTarefa(txtDescricaoTarefa.getText());
             txtDescricaoTarefa.setText("");
@@ -33,9 +48,9 @@ public class TelaPrincipal {
 
 
         //existente
-        btnAdicionarTarefa.addActionListener(e -> { // funçao que faz com que o computador "ouça" oq esta escrito
-            adicionarTarefa(txtDescricaoTarefa.getText());  //pegar texto do atributo colocar no campo de texto
-            txtDescricaoTarefa.setText(""); //limpar o texto do campo de texto
+        btnAdicionarTarefa.addActionListener(e -> { 
+            adicionarTarefa(txtDescricaoTarefa.getText()); 
+            txtDescricaoTarefa.setText("");
         });
         chkExibirFinalizadas.addActionListener(e -> {
             boolean selecionado = ((JCheckBox) e.getSource()).isSelected();
@@ -45,10 +60,10 @@ public class TelaPrincipal {
     }
 
     private void adicionarTarefa(String texto) {
-        Tarefa tarefa = new Tarefa(texto, tarefas.size()); //cria uma nova tarefa da classe Tarefa e ver o tamanho do texto
-        controlador.adicionarTarefaAtiva(tarefa); // controla toda a função de adicionar a tarefa
-        tblTarefas.revalidate(); // reavalia os componentes do painel e suas dimensões
-        tblTarefas.repaint(); //reescreve texto no campo
+        Tarefa tarefa = new Tarefa(texto, tarefas.size()); 
+        controlador.adicionarTarefaAtiva(tarefa); 
+        tblTarefas.revalidate(); 
+        tblTarefas.repaint(); 
     }
     //mudanças
     public void deletarTarefa(int indice){
@@ -67,7 +82,7 @@ public class TelaPrincipal {
                 "Deletar tarefa", JOptionPane.YES_NO_OPTION
         );
 
-//        controlador.removerTarefa(tarefa);
+        controlador.removerTarefa(tarefa);
         tabela.fireTableDataChanged();
 
     }
