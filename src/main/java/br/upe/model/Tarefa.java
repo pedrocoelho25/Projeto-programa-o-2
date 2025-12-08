@@ -1,8 +1,8 @@
 package br.upe.model;
-
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Tarefa {
+public class Tarefa implements Serializable {
 
     private String descricao;
     private LocalDate dataCriacao;
