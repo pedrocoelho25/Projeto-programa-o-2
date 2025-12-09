@@ -17,7 +17,7 @@ public class TarefaTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return getTarefasExibidas().size();
+        return getTarefasExibidas().size(); //aqui atualiza a tabela com o novo metodo
     }
 
     @Override
