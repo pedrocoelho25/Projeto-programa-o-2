@@ -87,7 +87,7 @@ public class TelaPrincipal {
                 "Deletar tarefa", JOptionPane.YES_NO_OPTION
         );
         if (opcao == JOptionPane.YES_OPTION) {
-            controlador.removerTarefa(tarefa);
+            controlador.removerTarefa(indice);
             tabela.fireTableDataChanged();
         }
 
