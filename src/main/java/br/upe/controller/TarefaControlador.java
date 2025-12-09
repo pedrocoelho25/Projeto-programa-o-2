@@ -36,17 +36,22 @@ public class TarefaControlador {
         );
         tarefaTableModel.fireTableDataChanged();
     }
-    public void removerTarefa(Tarefa tarefa) {
+     public void removerTarefa(int indice) {
 
-        if (tarefa.isFinalizada()) {
-            tarefaTableModel.getTarefasFinalizadas().remove(tarefa);
+        TarefaTableModel model = tarefaTableModel;
+
+        Tarefa tarefa = model.getTarefa(indice);
+
+        if (tarefa == null) return;
+
+        if (model.isExibirFinalizadas()) {
+            model.getTarefasFinalizadas().remove(tarefa);
         } else {
-            tarefaTableModel.getTarefasAtivas().remove(tarefa);
+            model.getTarefasAtivas().remove(tarefa);
         }
 
-
         salvarTarefas();
-
+        model.fireTableDataChanged();
 
         tarefaTableModel.fireTableDataChanged();
     }
