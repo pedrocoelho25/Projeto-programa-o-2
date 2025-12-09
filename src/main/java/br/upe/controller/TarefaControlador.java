@@ -59,16 +59,23 @@ public class TarefaControlador {
         List<Tarefa> finalizadas = new ArrayList<>();
 
 
-        List<Tarefa> todas = new ArrayList<>();
-        todas.addAll(dados.get(0));
-        todas.addAll(dados.get(1));
 
+        List<Tarefa> listaAtivas = dados.get(0);
+        List<Tarefa> listaFinalizadas = dados.get(1);
 
-        for (Tarefa t : todas) {
-            if (t.isFinalizada()) {
-                finalizadas.add(t);
-            } else {
-                ativas.add(t);
+        if (listaAtivas != null) {
+            for (Tarefa t : listaAtivas) {
+                if (t != null) {
+                    ativas.add(t);
+                }
+            }
+        }
+
+        if (listaFinalizadas != null) {
+            for (Tarefa t : listaFinalizadas) {
+                if (t != null) {
+                    finalizadas.add(t);
+                }
             }
         }
 
