@@ -51,6 +51,8 @@ public class TarefaTableModel extends AbstractTableModel {
         return columnIndex == 0;
     }
 
+
+    //Mudança aqui
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         if (columnIndex != 0) return;
@@ -78,7 +80,7 @@ public class TarefaTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-
+    //mudança aqui, novos metodos para auxiliar as mudanças anteriores
     private List<Tarefa> getTarefasExibidas() {
         if (exibirFinalizadas) {
             return tarefasFinalizadas;
